@@ -17,7 +17,11 @@ uv sync
 uv run src/main.py
 ```
 
-At this step, the script opens Chrome, clicks the download link and closes Chrome. No error is shown, but the download never ends up in `media/`. Section 3.1 of the article explains why.
+The script opens Chrome, downloads a file from the Selenium website and prints where it was saved:
+
+```
+Downloaded /path/to/this/repo/downloads/file_1.txt (14 bytes)
+```
 
 The two Selenium Manager examples from section 2 are standalone scripts:
 
@@ -26,16 +30,36 @@ uv run src/with_selenium_manager.py      # pins Chrome 155 with browser_version
 uv run src/without_selenium_manager.py   # needs a chromedriver you downloaded to drivers/chromedriver
 ```
 
+## Changing the download folder
+
+By default, files go to `downloads/` at the project root. Set the `DOWNLOAD_DIR` environment variable to change it (for example on a server or in a container):
+
+```bash
+DOWNLOAD_DIR=/data/downloads uv run src/main.py
+```
+
+The folder is checked before the browser opens. The path must be absolute and writable, otherwise the script stops with a clear error:
+
+```bash
+$ DOWNLOAD_DIR=media uv run src/main.py
+ValueError: download_dir must be an absolute path, got 'media'
+
+$ DOWNLOAD_DIR=/media uv run src/main.py
+PermissionError: download_dir '/media' is not writable
+```
+
 ## Steps
 
 | Tag | What it shows | Article section |
 |---|---|---|
-| `part-1/01-broken` | First version: `DOWNLOAD_DIR = Path("media")` hard-coded in `main.py`, and `run()` quits the browser right after the click | 3. Serving the Webdriver |
+| `part-1/01-broken` | First version: `DOWNLOAD_DIR = Path("media")` hard-coded in `main.py`, and `run()` quits the browser right after the click. No error, and the download never arrives. | 3. Serving the Webdriver |
+| `part-1/02-settings` | `settings.py` with `DOWNLOAD_DIR`, `set_download_default_dir` validating the folder, and the automation waiting for the download | 3.2. Centralized settings and a validated download directory |
 
 Check out a step with:
 
 ```bash
 git checkout part-1/01-broken
+git checkout part-1/02-settings
 ```
 
 Go back to the latest code with `git checkout main`.
