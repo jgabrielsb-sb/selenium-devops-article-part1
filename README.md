@@ -17,7 +17,7 @@ uv sync
 uv run src/main.py
 ```
 
-The script opens Chrome, downloads a file from the Selenium website and prints where it was saved:
+The script opens Chrome, downloads a file from the Selenium website, closes Chrome and prints where the file was saved:
 
 ```
 Downloaded /path/to/this/repo/downloads/file_1.txt (14 bytes)
@@ -54,12 +54,14 @@ PermissionError: download_dir '/media' is not writable
 |---|---|---|
 | `part-1/01-broken` | First version: `DOWNLOAD_DIR = Path("media")` hard-coded in `main.py`, and `run()` quits the browser right after the click. No error, and the download never arrives. | 3. Serving the Webdriver |
 | `part-1/02-settings` | `settings.py` with `DOWNLOAD_DIR`, `set_download_default_dir` validating the folder, and the automation waiting for the download | 3.2. Centralized settings and a validated download directory |
+| `part-1/03-session` | `WebdriverSession` owns the browser's lifecycle; the base class's `run()` opens and closes it, and each automation only implements `_run()` (final code) | 3.3. Managing Webdriver Sessions Effectively |
 
 Check out a step with:
 
 ```bash
 git checkout part-1/01-broken
 git checkout part-1/02-settings
+git checkout part-1/03-session
 ```
 
 Go back to the latest code with `git checkout main`.
