@@ -1,0 +1,9 @@
+[project]
+name = "selenium-devops-article-part1"
+version = "0.1.0"
+description = "Companion code for \"It Works on My Machine\", Part 1: Selenium Manager, validated settings and webdriver sessions in Python"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "selenium>=4.53.0",
+]
